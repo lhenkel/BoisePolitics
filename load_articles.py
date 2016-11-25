@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import urllib
+#Somethign
 html_doc = 'http://www.spokesman.com/blogs/boise/'
 r = urllib.urlopen(html_doc).read()
 soup = BeautifulSoup(r, 'html.parser')
