@@ -7,6 +7,8 @@ import urllib
 import praw
 import sys
 
+really_post = True
+
 config = ConfigParser.RawConfigParser()
 config.read('boise.cfg')
 
@@ -64,15 +66,20 @@ for cur_article in articles:
 			print "already posted"
 		else:
 			print "new to me"
-			got_error = post_to_reddit(reddit, cur_title + ' [BR]', cur_summary, cur_href)
-			
-			if got_error == False:
-				prev_article_set.add(cur_href)
-			else:
-				print 'Post Error:' + got_error 
+
+			if really_post:
+				got_error = post_to_reddit(reddit, cur_title + ' [BR]', cur_summary, cur_href)
+				
+				if got_error == False:
+					prev_article_set.add(cur_href)
+					pickle.dump( prev_article_set, open(previous_urls_file, "wb" ) )
+
+				else:
+					print 'Post Error:' + got_error 
 
 		print "=================="
-		
+
+print "Looping statesman politics "		
 ## Loop through Idaho statesman local politics and post	
 html_doc = 'http://www.idahostatesman.com/news/politics-government/state-politics/'
 r = urllib.urlopen(html_doc).read()
@@ -82,26 +89,33 @@ articles = soup.find_all('article')
 count = 0	
 	
 for cur_article in articles:
-	count = count + 1
+	
 	if count > 3:
 		break
 	
 	cur_href = cur_article.find_all("a")[2]['href']
 	cur_title = cur_article.find_all("a")[2].contents[0].strip().encode(sys.stdout.encoding, errors='replace')
-	cur_summary = cur_article.find_all("p")[1].contents[0].strip().encode(sys.stdout.encoding, errors='replace')	
 
+	if len(cur_article.find_all("p")) >= 2:
+		cur_summary = cur_article.find_all("p")[1].contents[0].strip().encode(sys.stdout.encoding, errors='replace')	
+		count = count + 1
+	else:
+		continue
 	if cur_href.strip() != '' and cur_title.strip() != '':
 		print cur_title
 		if cur_href in prev_article_set:
 			print "already posted"
 		else:
 			print "new to me"
-			got_error = post_to_reddit(reddit, cur_title + ' [IS]', cur_summary, cur_href)
-			
-			if got_error == False:
-				prev_article_set.add(cur_href)
-			else:
-				print 'Post Error:' + got_error 
+			if really_post:
+				got_error = post_to_reddit(reddit, cur_title + ' [IS]', cur_summary, cur_href)
+				
+				if got_error == False:
+					prev_article_set.add(cur_href)
+					pickle.dump( prev_article_set, open(previous_urls_file, "wb" ) )
+
+				else:
+					print 'Post Error:' + got_error 
 
 		print "=================="		
 	
