@@ -11,6 +11,8 @@ really_post = True
 
 config = ConfigParser.RawConfigParser()
 config.read('boise.cfg')
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 def post_to_reddit(reddit_obj, title, summary, link, picture = '', style = 'self_post'):
 	
