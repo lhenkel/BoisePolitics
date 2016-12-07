@@ -58,7 +58,7 @@ for cur_article in articles:
 	
 	cur_href = cur_article.find_all("a")[0]["href"]
 	cur_title = cur_article.find_all("a")[0].contents[0].encode(sys.stdout.encoding, errors='replace')
-	cur_summary = cur_article.find_all("p")[0].contents[0].encode(sys.stdout.encoding, errors='replace')	
+	cur_summary = cur_article.find_all("p")[1].contents[0].encode(sys.stdout.encoding, errors='replace')	
 	if cur_href.strip() != '' and cur_title.strip() != '':
 		cur_href = 'http://www.spokesman.com' + cur_href
 		print cur_title
