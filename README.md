@@ -2,3 +2,4 @@
 
 It checks (via BeautifulSoup) Spokesman review and Idaho Statesman feed and posts it (via PRAW module) to /r/IdahoPolitics
 
+If for some unlikely reason you want to use this, replace the bogus data in boise.cfg with your own Reddit keys and you should be good to go.
